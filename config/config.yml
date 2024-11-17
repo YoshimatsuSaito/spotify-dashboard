@@ -1,5 +1,11 @@
-year: 2020
-genre: pop
-market: US
+start_year: 2000
+end_year: 2019
+genres: 
+  - pop
+  - hip-hop
+  - rock
+markets: 
+  - US
+  - JP
 # 100の倍数
-num_to_search: 200
+num_to_search: 100
