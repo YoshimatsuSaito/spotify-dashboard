@@ -1,0 +1,13 @@
+boto3
+pandas
+numpy
+streamlit
+spotipy
+seaborn
+plotly
+scikit-learn
+python-dotenv
+notebook
+transformers
+torch
+PyYAML
