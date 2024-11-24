@@ -1,5 +1,5 @@
 start_year: 2000
-end_year: 2019
+end_year: 2023
 genres: 
   - pop
   - hip-hop
@@ -7,5 +7,6 @@ genres:
 markets: 
   - US
   - JP
-# 100の倍数
 num_to_search: 100
+concat_data_key: "concat.csv"
+table_name: "song"

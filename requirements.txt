@@ -11,3 +11,4 @@ notebook
 transformers
 torch
 PyYAML
+duckdb

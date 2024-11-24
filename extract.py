@@ -6,10 +6,10 @@ from pathlib import Path
 import pandas as pd
 from dotenv import load_dotenv
 
-from modules.extractor.spotipy_handler import SpotipyHandler
-from modules.storage.upload_file_to_s3 import upload_file_to_s3
-from modules.nlp.sentiment_analyzer import SentimentAnalyzer
-from util.load_config import load_config
+from modules.spotipy_handler import SpotipyHandler
+from modules.upload_file_to_s3 import upload_file_to_s3
+from modules.sentiment_analyzer import SentimentAnalyzer
+from modules.load_config import load_config
 
 load_dotenv()
 
@@ -54,6 +54,11 @@ def main() -> None:
                 sa = SentimentAnalyzer()
                 df_sa = sa.classify(df["name"].tolist())
                 df = pd.concat([df, df_sa], axis=1)
+
+                # メタ情報の付与
+                df["market"] = market
+                df["year"] = year
+                df["genre"] = genre
 
                 # データの保存
                 upload_file_to_s3(
