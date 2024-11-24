@@ -10,3 +10,18 @@ markets:
 num_to_search: 100
 concat_data_key: "concat.csv"
 table_name: "song"
+features:
+  - danceability
+  - energy
+  - key
+  - loudness
+  - mode
+  - speechiness
+  - acousticness
+  - instrumentalness
+  - liveness
+  - valence
+  - tempo
+  - duration_ms
+  - time_signature
+  - sentiment
