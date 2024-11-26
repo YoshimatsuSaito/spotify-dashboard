@@ -40,18 +40,26 @@ list_genre = db.execute_query(f"SELECT DISTINCT genre from {TABLE_NAME}")[
     "genre"
 ].tolist()
 list_genre = sorted(list_genre)
+list_country = db.execute_query(f"SELECT DISTINCT market from {TABLE_NAME}")
 
 feature = st.selectbox("表示したい特徴を選択", list_feature, index=0)
-genre = st.selectbox("表示したいジャンルを選択", list_genre, index=0)
+genre = st.selectbox("表示したいジャンルを選択", list_genre, index=4)
+list_market = ["JP", "US"]
+str_markets = ", ".join([f"'{market}'" for market in list_market])
 
 if feature == "sentiment":
     df = db.execute_query(
-        f"SELECT label, score, market, year FROM {TABLE_NAME} WHERE genre = '{genre}'"
+        f"SELECT label, score, market, year FROM {TABLE_NAME} WHERE genre = '{genre}' AND market IN ({str_markets})"
     )
-    df["sentiment"] = df["score"] * df["label"].map({"POSITIVE": 1, "NEGATIVE": -1})
+    df[feature] = df["score"] * df["label"].map({"POSITIVE": 1, "NEGATIVE": -1})
+elif feature == "len_song_name":
+    df = db.execute_query(
+        f"SELECT name, market, year FROM {TABLE_NAME} WHERE genre = '{genre}' AND market IN ({str_markets})"
+    )
+    df[feature] = df["name"].str.len()
 else:
     df = db.execute_query(
-        f"SELECT {feature}, market, year FROM {TABLE_NAME} WHERE genre = '{genre}'"
+        f"SELECT {feature}, market, year FROM {TABLE_NAME} WHERE genre = '{genre}' AND market IN ({str_markets})"
     )
 
 fig, ax = plt.subplots()

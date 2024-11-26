@@ -1,12 +1,19 @@
-start_year: 2000
+start_year: 1980
 end_year: 2023
 genres: 
   - pop
   - hip-hop
   - rock
+  - classical
+  - edm
+  - jazz
 markets: 
   - US
   - JP
+  - FR
+  - GB
+  - DE
+  - BR
 num_to_search: 100
 concat_data_key: "concat.csv"
 table_name: "song"
@@ -25,3 +32,4 @@ features:
   - duration_ms
   - time_signature
   - sentiment
+  - len_song_name

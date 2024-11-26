@@ -39,33 +39,34 @@ def main() -> None:
                 df_result_search = sh.search(
                     year=year, market=market, genre=genre, num_to_search=num_to_search
                 )
-                df_audio_features = sh.get_audio_features(
-                    df_result_search["track_id"].tolist()
-                )
-                df = pd.merge(
-                    df_audio_features,
-                    df_result_search.loc[:, ["name", "popularity", "track_id"]],
-                    how="left",
-                    left_on=["id"],
-                    right_on=["track_id"],
-                ).reset_index(drop=True)
+                if not df_result_search.empty:
+                    df_audio_features = sh.get_audio_features(
+                        df_result_search["track_id"].tolist()
+                    )
+                    df = pd.merge(
+                        df_audio_features,
+                        df_result_search.loc[:, ["name", "popularity", "track_id"]],
+                        how="left",
+                        left_on=["id"],
+                        right_on=["track_id"],
+                    ).reset_index(drop=True)
 
-                # タイトルの感情分析結果の追加
-                sa = SentimentAnalyzer()
-                df_sa = sa.classify(df["name"].tolist())
-                df = pd.concat([df, df_sa], axis=1)
+                    # タイトルの感情分析結果の追加
+                    sa = SentimentAnalyzer()
+                    df_sa = sa.classify(df["name"].tolist())
+                    df = pd.concat([df, df_sa], axis=1)
 
-                # メタ情報の付与
-                df["market"] = market
-                df["year"] = year
-                df["genre"] = genre
+                    # メタ情報の付与
+                    df["market"] = market
+                    df["year"] = year
+                    df["genre"] = genre
 
-                # データの保存
-                upload_file_to_s3(
-                    df=df,
-                    file_key=f"{market}/{year}/{genre}.csv",
-                    bucket_name=BUCKET_NAME,
-                )
+                    # データの保存
+                    upload_file_to_s3(
+                        df=df,
+                        file_key=f"{market}/{year}/{genre}.csv",
+                        bucket_name=BUCKET_NAME,
+                    )
 
 
 if __name__ == "__main__":
